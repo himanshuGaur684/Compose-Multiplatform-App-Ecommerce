@@ -1,0 +1,17 @@
+CREATE TABLE productDetails (
+id INTEGER NOT NULL PRIMARY KEY,
+image TEXT,
+title TEXT,
+desc TEXT
+);
+
+insert:
+INSERT INTO productDetails(id,image,title,desc)
+VALUES (?,?,?,?);
+
+
+getProductList:
+SELECT * FROM productDetails;
+
+delete:
+DELETE FROM productDetails WHERE id=:id;

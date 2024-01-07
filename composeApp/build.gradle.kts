@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     kotlin("plugin.serialization") version "1.9.21"
 
+    id("app.cash.sqldelight") version "2.0.1"
+
 }
 
 kotlin {
@@ -24,7 +26,7 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
-            isStatic = true
+//            isStatic = true
         }
     }
 
@@ -38,6 +40,9 @@ kotlin {
             implementation("io.ktor:ktor-client-android:2.3.7")
             implementation("io.insert-koin:koin-core:3.5.0")
             implementation("io.insert-koin:koin-android:3.4.3")
+
+            // sqldelight
+            implementation("app.cash.sqldelight:android-driver:2.0.1")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -65,12 +70,28 @@ kotlin {
             implementation("io.insert-koin:koin-core:3.5.0")
             implementation("io.insert-koin:koin-compose:1.1.0")
 
+            // sqldelight ext
+            implementation("app.cash.sqldelight:coroutines-extensions:2.0.1")
+
         }
         iosMain.dependencies {
             // darwin ktor client for ios
             implementation("io.ktor:ktor-client-darwin:2.3.7")
+
+            // sql delight ios driver
+            implementation("app.cash.sqldelight:native-driver:2.0.1")
         }
     }
+
+    sqldelight{
+        databases{
+            create("AppDatabase"){
+                packageName.set("app_db")
+                srcDirs("src/commonMain/sqldelight")
+            }
+        }
+    }
+
 }
 
 android {
